@@ -20,13 +20,13 @@ export default function CreateMindMapForm({
   };
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center">
+    <div className="w-full h-full flex flex-col items-center justify-center p-4">
       <div className="relative flex h-[500px] w-full flex-col items-center justify-center overflow-hidden rounded-lg">
-        <span className="pointer-events-none z-10 whitespace-pre-wrap pb-2 bg-gradient-to-b from-[#3a3b3b] via-[#555555] to-[#6a6a6a] bg-clip-text text-center text-7xl font-bold leading-none tracking-tighter text-transparent">
+        <span className="pointer-events-none z-10  whitespace-pre-wrap pb-2 bg-gradient-to-b from-[#3a3b3b] via-[#555555] to-[#6a6a6a] bg-clip-text text-center text-7xl font-bold leading-none tracking-tighter text-transparent">
           Learn Thing
         </span>
-        <p className="text-gray-800 mb-10">
-          Create an AI-powered mind map. Start learning something new today.
+        <p className="text-sm mt-2 md:text-base text-gray-800 mb-10 text-center">
+          AI-generated mind map to learn something new.
         </p>
         <form onSubmit={handleSubmit} className="flex gap-2 w-full max-w-3xl">
           <Input

@@ -11,6 +11,7 @@ import ReactFlow, {
   Position,
   useNodesState,
   useEdgesState,
+  MiniMap,
 } from "reactflow";
 import "reactflow/dist/style.css";
 import {
@@ -23,6 +24,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ExternalLink, Download, PlusSquare } from "lucide-react";
 import { convertToMarkdown, downloadJson } from "@/lib/utils";
+import MindMapLegend from "./MindMapLegend";
 
 interface Link {
   title: string;
@@ -156,8 +158,24 @@ const MindMap: React.FC<{ data: MindMapData | null }> = ({ data }) => {
   }, []);
 
   const onNodeClick = useCallback((event: React.MouseEvent, node: Node) => {
-    setSelectedNode(node.data as MindMapNode);
+    if (event.detail === 2) {
+      setSelectedNode(node.data as MindMapNode);
+    }
   }, []);
+
+  const onNodeDragStop = useCallback(
+    (event: React.MouseEvent, node: Node) => {
+      setNodes((nds) =>
+        nds.map((n) => {
+          if (n.id === node.id) {
+            return { ...n, position: node.position };
+          }
+          return n;
+        })
+      );
+    },
+    [setNodes]
+  );
 
   const nodeTypes = useMemo(
     () => ({
@@ -215,24 +233,27 @@ const MindMap: React.FC<{ data: MindMapData | null }> = ({ data }) => {
         onEdgesChange={onEdgesChange}
         nodeTypes={nodeTypes}
         onNodeClick={onNodeClick}
+        onNodeDragStop={onNodeDragStop}
         onInit={onInit}
         fitView
         minZoom={0.1}
         maxZoom={1.5}
         defaultViewport={{ x: 0, y: 0, zoom: 0.5 }}
-        elementsSelectable={false}
-        nodesDraggable={false}
+        elementsSelectable={true}
+        nodesDraggable={true}
       >
         <Background color="#f0f0f0" gap={16} />
         <Controls showInteractive={false} />
+        <MiniMap />
       </ReactFlow>
+      <MindMapLegend />
       <Sheet open={!!selectedNode} onOpenChange={() => setSelectedNode(null)}>
         <SheetContent className="overflow-y-auto">
           <SheetHeader>
-            <SheetTitle className="text-2xl font-bold mb-2">
+            <SheetTitle className="text-2xl mt-4 font-bold mb-2">
               {selectedNode?.title}
             </SheetTitle>
-            <SheetDescription className="mb-2">
+            <SheetDescription className="mb-2 text-gray-700">
               {selectedNode?.description}
             </SheetDescription>
           </SheetHeader>
@@ -245,7 +266,7 @@ const MindMap: React.FC<{ data: MindMapData | null }> = ({ data }) => {
           {selectedNode?.links && selectedNode.links.length > 0 && (
             <div className="mt-8">
               <h3 className="text-xl font-semibold mb-2">Learn More</h3>
-              <div className="space-y-2">
+              <div className="space-y-2 mt-4">
                 {selectedNode.links.map((link, index) => (
                   <Button
                     key={index}
