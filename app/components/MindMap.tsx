@@ -87,7 +87,9 @@ const createNodesAndEdges = (
   parentId: string | null,
   x: number,
   y: number,
-  level: number
+  level: number,
+  horizontalSpacing: number,
+  verticalSpacing: number
 ): { nodes: Node[]; edges: Edge[] } => {
   const nodeId = `${parentId ? `${parentId}-` : ""}${(node.title || "").replace(
     /\s+/g,
@@ -121,17 +123,21 @@ const createNodesAndEdges = (
   }
 
   if (node.nodes && node.nodes.length > 0) {
-    const childWidth = 400;
-    const childStartX = x - (childWidth * (node.nodes.length - 1)) / 2;
+    const childrenCount = node.nodes.length;
+    const totalWidth = childrenCount * horizontalSpacing;
+    const startX = x - totalWidth / 2 + horizontalSpacing / 2;
+
     node.nodes.forEach((childNode, index) => {
-      const childX = childStartX + index * childWidth;
-      const childY = y + 200;
+      const childX = startX + index * horizontalSpacing;
+      const childY = y + verticalSpacing;
       const { nodes: childNodes, edges: childEdges } = createNodesAndEdges(
         childNode,
         nodeId,
         childX,
         childY,
-        level + 1
+        level + 1,
+        horizontalSpacing / 1.5,
+        verticalSpacing
       );
       nodes = [...nodes, ...childNodes];
       edges = [...edges, ...childEdges];
@@ -147,35 +153,19 @@ const MindMap: React.FC<{ data: MindMapData | null }> = ({ data }) => {
   if (!data) return null;
 
   const { nodes: initialNodes, edges: initialEdges } = useMemo(() => {
-    return createNodesAndEdges({ ...data, order: 0 }, null, 0, 0, 0);
+    return createNodesAndEdges({ ...data, order: 0 }, null, 0, 0, 0, 600, 200);
   }, [data]);
 
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
   const onInit = useCallback((reactFlowInstance: any) => {
-    reactFlowInstance.fitView();
+    reactFlowInstance.fitView({ padding: 0.2 });
   }, []);
 
   const onNodeClick = useCallback((event: React.MouseEvent, node: Node) => {
-    if (event.detail === 2) {
-      setSelectedNode(node.data as MindMapNode);
-    }
+    setSelectedNode(node.data as MindMapNode);
   }, []);
-
-  const onNodeDragStop = useCallback(
-    (event: React.MouseEvent, node: Node) => {
-      setNodes((nds) =>
-        nds.map((n) => {
-          if (n.id === node.id) {
-            return { ...n, position: node.position };
-          }
-          return n;
-        })
-      );
-    },
-    [setNodes]
-  );
 
   const nodeTypes = useMemo(
     () => ({
@@ -233,14 +223,13 @@ const MindMap: React.FC<{ data: MindMapData | null }> = ({ data }) => {
         onEdgesChange={onEdgesChange}
         nodeTypes={nodeTypes}
         onNodeClick={onNodeClick}
-        onNodeDragStop={onNodeDragStop}
         onInit={onInit}
         fitView
         minZoom={0.1}
         maxZoom={1.5}
-        defaultViewport={{ x: 0, y: 0, zoom: 0.5 }}
+        defaultViewport={{ x: 0, y: 0, zoom: 0.4 }}
         elementsSelectable={true}
-        nodesDraggable={true}
+        nodesDraggable={false}
       >
         <Background color="#f0f0f0" gap={16} />
         <Controls showInteractive={false} />
@@ -250,7 +239,7 @@ const MindMap: React.FC<{ data: MindMapData | null }> = ({ data }) => {
       <Sheet open={!!selectedNode} onOpenChange={() => setSelectedNode(null)}>
         <SheetContent className="overflow-y-auto">
           <SheetHeader>
-            <SheetTitle className="text-2xl mt-4 font-bold mb-2">
+            <SheetTitle className="text-2xl mt-4 font-bold">
               {selectedNode?.title}
             </SheetTitle>
             <SheetDescription className="mb-2 text-gray-700">
