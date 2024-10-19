@@ -224,18 +224,18 @@ const MindMap: React.FC<{ data: MindMapData | null }> = ({ data }) => {
             <SheetTitle className="text-2xl font-bold mb-2">
               {selectedNode?.title}
             </SheetTitle>
-            <SheetDescription className="text-lg mb-4">
+            <SheetDescription className="mb-2">
               {selectedNode?.description}
             </SheetDescription>
           </SheetHeader>
           {selectedNode?.details && (
-            <div className="mt-6">
+            <div className="mt-8">
               <h3 className="text-xl font-semibold mb-2">Details</h3>
               <p className="text-gray-700">{selectedNode.details}</p>
             </div>
           )}
           {selectedNode?.links && selectedNode.links.length > 0 && (
-            <div className="mt-6">
+            <div className="mt-8">
               <h3 className="text-xl font-semibold mb-2">Learn More</h3>
               <div className="space-y-2">
                 {selectedNode.links.map((link, index) => (

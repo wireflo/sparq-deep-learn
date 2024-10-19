@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useChat } from "ai/react";
+import { useState } from "react";
 import { MindMapData } from "../components/MindMap";
 
 export function useMindMapData() {
@@ -9,23 +8,24 @@ export function useMindMapData() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
-  const { messages } = useChat();
-
-  useEffect(() => {
-    if (
-      messages.length > 0 &&
-      messages[messages.length - 1].role === "assistant"
-    ) {
-      try {
-        const parsedData = JSON.parse(messages[messages.length - 1].content);
-        setData(parsedData);
-        setIsLoading(false);
-      } catch (err) {
-        setError(err as Error);
-        setIsLoading(false);
-      }
+  const fetchMindMap = async (topic: string) => {
+    try {
+      setIsLoading(true);
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ topic: topic }),
+      });
+      const data = await response.text();
+      setData(JSON.parse(data));
+      setIsLoading(false);
+    } catch (err) {
+      setError(err as Error);
+      setIsLoading(false);
     }
-  }, [messages]);
+  };
 
-  return { data, isLoading, error };
+  return { data, isLoading, error, fetchMindMap };
 }
