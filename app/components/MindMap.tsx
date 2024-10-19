@@ -21,7 +21,7 @@ import {
   SheetDescription,
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { ExternalLink, Download } from "lucide-react";
+import { ExternalLink, Download, PlusSquare } from "lucide-react";
 import { convertToMarkdown, downloadJson } from "@/lib/utils";
 
 interface Link {
@@ -188,16 +188,24 @@ const MindMap: React.FC<{ data: MindMapData | null }> = ({ data }) => {
   return (
     <div style={{ width: "100%", height: "100vh" }}>
       <div className="absolute top-4 right-4 z-10 flex gap-2">
+        <Button
+          onClick={() => window.location.reload()}
+          variant="outline"
+          className="flex items-center gap-2"
+        >
+          <PlusSquare className="w-4 h-4" />
+          New
+        </Button>
         <Button onClick={downloadMarkdown} className="flex items-center gap-2">
           <Download className="w-4 h-4" />
-          Download Markdown
+          Markdown
         </Button>
         <Button
           onClick={handleDownloadJson}
           className="flex items-center gap-2"
         >
           <Download className="w-4 h-4" />
-          Download JSON
+          JSON
         </Button>
       </div>
       <ReactFlow

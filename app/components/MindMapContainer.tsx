@@ -5,12 +5,10 @@ import MindMap from "./MindMap";
 import { useMindMapData } from "../hooks/useMindMapData";
 import { useState, useEffect } from "react";
 import RetroGrid from "@/components/ui/retro-grid";
-import { Input } from "@/components/ui/input";
-import ShimmerButton from "@/components/ui/shimmer-button";
+import CreateMindMapForm from "@/app/components/CreateMindMapForm";
 
 export default function MindMapContainer() {
   const { data, isLoading, error, fetchMindMap } = useMindMapData();
-  const [topic, setTopic] = useState("");
   const [dots, setDots] = useState(".");
 
   const [loadingMessage, setLoadingMessage] = useState("Generating Mind Map");
@@ -23,11 +21,12 @@ export default function MindMapContainer() {
     const messages = [
       "Connecting ideas",
       "This may take some time",
-      "Well, this is awkward, it works on my machine",
+      "Well, this is awkward",
+      "It works on my machine",
+      "The demo gods are failing me",
+      "Still not finished",
+      "Running out of what to say",
       "You shouldn't be seeing this message",
-      "I'm sorry",
-      "I failed you",
-      "I give up",
     ];
     let messageIndex = 0;
 
@@ -41,13 +40,6 @@ export default function MindMapContainer() {
       clearInterval(messageInterval);
     };
   }, []);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (topic) {
-      fetchMindMap(topic);
-    }
-  };
 
   if (isLoading) {
     return (
@@ -81,31 +73,7 @@ export default function MindMapContainer() {
   if (error) return <div>Error: {error.message}</div>;
 
   if (!data) {
-    return (
-      <div className="w-full h-full flex flex-col items-center justify-center">
-        <div className="relative flex h-[500px] w-full flex-col items-center justify-center overflow-hidden rounded-lg">
-          <span className="pointer-events-none z-10 whitespace-pre-wrap pb-2 bg-gradient-to-b from-[#3a3b3b] via-[#555555] to-[#6a6a6a] bg-clip-text text-center text-7xl font-bold leading-none tracking-tighter text-transparent">
-            Learn Thing
-          </span>
-          <p className="text-gray-800 mb-10">
-            Create an AI-powered mind map. Start learning something new today.
-          </p>
-          <form onSubmit={handleSubmit} className="flex gap-2 w-full max-w-3xl">
-            <Input
-              type="text"
-              value={topic}
-              onChange={(e) => setTopic(e.target.value)}
-              placeholder="Enter a topic"
-              className="px-4 py-2 border border-gray-300 rounded z-10"
-            />
-            <ShimmerButton type="submit" className="px-5 z-10">
-              Generate
-            </ShimmerButton>
-          </form>
-          <RetroGrid />
-        </div>
-      </div>
-    );
+    return <CreateMindMapForm onSubmit={fetchMindMap} />;
   }
 
   return (
