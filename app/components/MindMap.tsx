@@ -11,6 +11,7 @@ import ReactFlow, {
   Position,
   useNodesState,
   useEdgesState,
+  MiniMap,
 } from "reactflow";
 import "reactflow/dist/style.css";
 import {
@@ -21,8 +22,9 @@ import {
   SheetDescription,
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { ExternalLink, Download } from "lucide-react";
+import { ExternalLink, Download, PlusSquare } from "lucide-react";
 import { convertToMarkdown, downloadJson } from "@/lib/utils";
+import MindMapLegend from "./MindMapLegend";
 
 interface Link {
   title: string;
@@ -85,7 +87,9 @@ const createNodesAndEdges = (
   parentId: string | null,
   x: number,
   y: number,
-  level: number
+  level: number,
+  horizontalSpacing: number,
+  verticalSpacing: number
 ): { nodes: Node[]; edges: Edge[] } => {
   const nodeId = `${parentId ? `${parentId}-` : ""}${(node.title || "").replace(
     /\s+/g,
@@ -119,17 +123,21 @@ const createNodesAndEdges = (
   }
 
   if (node.nodes && node.nodes.length > 0) {
-    const childWidth = 400;
-    const childStartX = x - (childWidth * (node.nodes.length - 1)) / 2;
+    const childrenCount = node.nodes.length;
+    const totalWidth = childrenCount * horizontalSpacing;
+    const startX = x - totalWidth / 2 + horizontalSpacing / 2;
+
     node.nodes.forEach((childNode, index) => {
-      const childX = childStartX + index * childWidth;
-      const childY = y + 200;
+      const childX = startX + index * horizontalSpacing;
+      const childY = y + verticalSpacing;
       const { nodes: childNodes, edges: childEdges } = createNodesAndEdges(
         childNode,
         nodeId,
         childX,
         childY,
-        level + 1
+        level + 1,
+        horizontalSpacing / 1.5,
+        verticalSpacing
       );
       nodes = [...nodes, ...childNodes];
       edges = [...edges, ...childEdges];
@@ -145,14 +153,14 @@ const MindMap: React.FC<{ data: MindMapData | null }> = ({ data }) => {
   if (!data) return null;
 
   const { nodes: initialNodes, edges: initialEdges } = useMemo(() => {
-    return createNodesAndEdges({ ...data, order: 0 }, null, 0, 0, 0);
+    return createNodesAndEdges({ ...data, order: 0 }, null, 0, 0, 0, 600, 200);
   }, [data]);
 
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
   const onInit = useCallback((reactFlowInstance: any) => {
-    reactFlowInstance.fitView();
+    reactFlowInstance.fitView({ padding: 0.2 });
   }, []);
 
   const onNodeClick = useCallback((event: React.MouseEvent, node: Node) => {
@@ -188,16 +196,24 @@ const MindMap: React.FC<{ data: MindMapData | null }> = ({ data }) => {
   return (
     <div style={{ width: "100%", height: "100vh" }}>
       <div className="absolute top-4 right-4 z-10 flex gap-2">
+        <Button
+          onClick={() => window.location.reload()}
+          variant="outline"
+          className="flex items-center gap-2"
+        >
+          <PlusSquare className="w-4 h-4" />
+          New
+        </Button>
         <Button onClick={downloadMarkdown} className="flex items-center gap-2">
           <Download className="w-4 h-4" />
-          Download Markdown
+          Markdown
         </Button>
         <Button
           onClick={handleDownloadJson}
           className="flex items-center gap-2"
         >
           <Download className="w-4 h-4" />
-          Download JSON
+          JSON
         </Button>
       </div>
       <ReactFlow
@@ -211,33 +227,35 @@ const MindMap: React.FC<{ data: MindMapData | null }> = ({ data }) => {
         fitView
         minZoom={0.1}
         maxZoom={1.5}
-        defaultViewport={{ x: 0, y: 0, zoom: 0.5 }}
-        elementsSelectable={false}
+        defaultViewport={{ x: 0, y: 0, zoom: 0.4 }}
+        elementsSelectable={true}
         nodesDraggable={false}
       >
         <Background color="#f0f0f0" gap={16} />
         <Controls showInteractive={false} />
+        <MiniMap />
       </ReactFlow>
+      <MindMapLegend />
       <Sheet open={!!selectedNode} onOpenChange={() => setSelectedNode(null)}>
         <SheetContent className="overflow-y-auto">
           <SheetHeader>
-            <SheetTitle className="text-2xl font-bold mb-2">
+            <SheetTitle className="text-2xl mt-4 font-bold">
               {selectedNode?.title}
             </SheetTitle>
-            <SheetDescription className="text-lg mb-4">
+            <SheetDescription className="mb-2 text-gray-700">
               {selectedNode?.description}
             </SheetDescription>
           </SheetHeader>
           {selectedNode?.details && (
-            <div className="mt-6">
+            <div className="mt-8">
               <h3 className="text-xl font-semibold mb-2">Details</h3>
               <p className="text-gray-700">{selectedNode.details}</p>
             </div>
           )}
           {selectedNode?.links && selectedNode.links.length > 0 && (
-            <div className="mt-6">
+            <div className="mt-8">
               <h3 className="text-xl font-semibold mb-2">Learn More</h3>
-              <div className="space-y-2">
+              <div className="space-y-2 mt-4">
                 {selectedNode.links.map((link, index) => (
                   <Button
                     key={index}

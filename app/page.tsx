@@ -1,16 +1,16 @@
 "use client";
 
 import { Suspense } from "react";
-import ChatComponent from "./components/ChatComponent";
-import MindMapWrapper from "./components/MindMapWrapper";
+import MindMapContainer from "./components/MindMapContainer";
+import Credits from "./components/Credits";
 
 export default function Home() {
   return (
     <div className="relative w-full h-screen">
       <Suspense fallback={<div>Loading mind map...</div>}>
-        <MindMapWrapper />
+        <MindMapContainer />
+        <Credits />
       </Suspense>
-      <ChatComponent />
     </div>
   );
 }
