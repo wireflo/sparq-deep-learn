@@ -6,7 +6,7 @@ The UI is built using [shadcn](https://ui.shadcn.com/) and some components from 
 
 It allows users to view and interact with mind maps, and download the mind map data as a markdown file.
 
-The mind map data is generated using local models from [Ollama](https://ollama.com/) and leveraging [AI SDK](https://sdk.vercel.ai/docs/introduction).
+The mind map data is generated using either local models from [Ollama](https://ollama.com/) or external models like [OpenAI](https://openai.com/) and leveraging [AI SDK](https://sdk.vercel.ai/docs/introduction).
 
 ## Features
 
@@ -14,6 +14,7 @@ The mind map data is generated using local models from [Ollama](https://ollama.c
 - Node details view in a side sheet
 - Markdown export functionality
 - Save mind map data to a local JSON file
+- Switch between local and external models
 
 ## Getting Started
 
@@ -23,11 +24,17 @@ Install all dependencies:
 npm install
 ```
 
-You must specify the model running using Ollama in the `route.ts` file.
+Copy the `.env.template` file to `.env.local` and specify which model (local or external) you want to use by setting the `NEXT_PUBLIC_USE_LOCAL_MODELS` environment variable to `true` or `false`.
+
+When running an OpenAI model, you must specify your OpenAI API key in the `.env.local` file.
+
+Inside the `route.ts` file, you must specify the model you are running using Ollama, by default it will use the `llama3.1` model for local models and for external models it will use the `gpt-3.5-turbo` model.
+
+Bear in mind that external models tend to be much faster serving than local models.
 
 If you want to learn how to run a model locally, check out the [Ollama documentation](https://github.com/ollama/ollama/blob/main/README.md#quickstart).
 
-Then, run the development server:
+Now you're ready to run the development server:
 
 ```bash
 npm run dev
@@ -35,8 +42,6 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser and then start creating your own learning mind maps.
 
-## Using external AI models
+## Prompts
 
-If you want to use external AI models, you can do so by modifying the `route.ts` file.
-
-Check out the [AI SDK documentation](https://sdk.vercel.ai/docs/getting-started/nextjs-app-router) for more information on how to use external AI models.
+The prompt used to generate the mind map data is defined in the `defaultPrompt` variable in the `prompts.ts` file.
