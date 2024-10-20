@@ -71,7 +71,7 @@ const ShimmerButton = React.forwardRef<HTMLButtonElement, ShimmerButtonProps>(
 
         <div
           className={cn(
-            "absolute -z-20 bg-slate-800 [border-radius:var(--radius)] [inset:var(--cut)]"
+            "absolute -z-20 bg-slate-900 [border-radius:var(--radius)] [inset:var(--cut)]"
           )}
         />
       </button>
