@@ -6,6 +6,9 @@ import { useMindMapData } from "../hooks/useMindMapData";
 import { useState, useEffect } from "react";
 import RetroGrid from "@/components/ui/retro-grid";
 import CreateMindMapForm from "@/app/components/CreateMindMapForm";
+import Credits from "./Credits";
+import Hero from "./Hero";
+import { motion } from "framer-motion";
 
 export default function MindMapContainer() {
   const { data, isLoading, error, fetchMindMap } = useMindMapData();
@@ -71,7 +74,26 @@ export default function MindMapContainer() {
   if (error) return <div>Error: {error.message}</div>;
 
   if (!data) {
-    return <CreateMindMapForm onSubmit={fetchMindMap} />;
+    return (
+      <>
+        <div className="w-full h-full flex flex-col items-center justify-center p-4">
+          <div className="relative flex h-[500px] w-full flex-col items-center justify-center overflow-hidden rounded-lg">
+            <Hero />
+            <div className="mt-10 w-full max-w-3xl">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+              >
+                <CreateMindMapForm onSubmit={fetchMindMap} />
+              </motion.div>
+            </div>
+            <RetroGrid />
+          </div>
+          <Credits />
+        </div>
+      </>
+    );
   }
 
   return (

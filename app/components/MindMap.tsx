@@ -26,6 +26,7 @@ import { ExternalLink, Download, PlusSquare } from "lucide-react";
 import { convertToMarkdown, downloadJson } from "@/lib/utils";
 import MindMapLegend from "./MindMapLegend";
 import { motion, AnimatePresence } from "framer-motion";
+import Credits from "./Credits";
 
 interface Link {
   title: string;
@@ -205,30 +206,6 @@ const MindMap: React.FC<{ data: MindMapData | null }> = ({ data }) => {
 
   return (
     <div style={{ width: "100%", height: "100vh" }}>
-      <div className="absolute top-4 right-4 z-10 flex gap-2">
-        <Button
-          onClick={() => window.location.reload()}
-          variant="outline"
-          className="flex items-center gap-2 cursor-pointer"
-        >
-          <PlusSquare className="w-4 h-4" />
-          New
-        </Button>
-        <Button
-          onClick={downloadMarkdown}
-          className="flex items-center gap-2 cursor-pointer"
-        >
-          <Download className="w-4 h-4" />
-          Markdown
-        </Button>
-        <Button
-          onClick={handleDownloadJson}
-          className="flex items-center gap-2 cursor-pointer"
-        >
-          <Download className="w-4 h-4" />
-          JSON
-        </Button>
-      </div>
       <AnimatePresence>
         {!isLoading && (
           <motion.div
@@ -238,6 +215,30 @@ const MindMap: React.FC<{ data: MindMapData | null }> = ({ data }) => {
             transition={{ duration: 0.5, ease: "easeOut" }}
             style={{ width: "100%", height: "100%" }}
           >
+            <div className="absolute top-4 right-4 z-10 flex gap-2">
+              <Button
+                onClick={() => window.location.reload()}
+                variant="outline"
+                className="flex items-center gap-2 cursor-pointer"
+              >
+                <PlusSquare className="w-4 h-4" />
+                New
+              </Button>
+              <Button
+                onClick={downloadMarkdown}
+                className="flex items-center gap-2 cursor-pointer"
+              >
+                <Download className="w-4 h-4" />
+                Markdown
+              </Button>
+              <Button
+                onClick={handleDownloadJson}
+                className="flex items-center gap-2 cursor-pointer"
+              >
+                <Download className="w-4 h-4" />
+                JSON
+              </Button>
+            </div>
             <ReactFlow
               nodes={nodes}
               edges={edges}
@@ -257,10 +258,11 @@ const MindMap: React.FC<{ data: MindMapData | null }> = ({ data }) => {
               <Controls showInteractive={false} />
               <MiniMap />
             </ReactFlow>
+            <MindMapLegend />
+            <Credits />
           </motion.div>
         )}
       </AnimatePresence>
-      <MindMapLegend />
       <Sheet open={!!selectedNode} onOpenChange={() => setSelectedNode(null)}>
         <SheetContent className="overflow-y-auto">
           <SheetHeader>
