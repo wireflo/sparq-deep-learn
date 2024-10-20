@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState, useEffect } from "react";
 import ReactFlow, {
   Node,
   Edge,
@@ -25,6 +25,7 @@ import { Button } from "@/components/ui/button";
 import { ExternalLink, Download, PlusSquare } from "lucide-react";
 import { convertToMarkdown, downloadJson } from "@/lib/utils";
 import MindMapLegend from "./MindMapLegend";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface Link {
   title: string;
@@ -149,6 +150,15 @@ const createNodesAndEdges = (
 
 const MindMap: React.FC<{ data: MindMapData | null }> = ({ data }) => {
   const [selectedNode, setSelectedNode] = useState<MindMapNode | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 110);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   if (!data) return null;
 
@@ -219,25 +229,37 @@ const MindMap: React.FC<{ data: MindMapData | null }> = ({ data }) => {
           JSON
         </Button>
       </div>
-      <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        nodeTypes={nodeTypes}
-        onNodeClick={onNodeClick}
-        onInit={onInit}
-        fitView
-        minZoom={0.1}
-        maxZoom={1.5}
-        defaultViewport={{ x: 0, y: 0, zoom: 0.4 }}
-        elementsSelectable={true}
-        nodesDraggable={false}
-      >
-        <Background color="#f0f0f0" gap={16} />
-        <Controls showInteractive={false} />
-        <MiniMap />
-      </ReactFlow>
+      <AnimatePresence>
+        {!isLoading && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            style={{ width: "100%", height: "100%" }}
+          >
+            <ReactFlow
+              nodes={nodes}
+              edges={edges}
+              onNodesChange={onNodesChange}
+              onEdgesChange={onEdgesChange}
+              nodeTypes={nodeTypes}
+              onNodeClick={onNodeClick}
+              onInit={onInit}
+              fitView
+              minZoom={0.1}
+              maxZoom={1.5}
+              defaultViewport={{ x: 0, y: 0, zoom: 0.4 }}
+              elementsSelectable={true}
+              nodesDraggable={false}
+            >
+              <Background color="#f0f0f0" gap={16} />
+              <Controls showInteractive={false} />
+              <MiniMap />
+            </ReactFlow>
+          </motion.div>
+        )}
+      </AnimatePresence>
       <MindMapLegend />
       <Sheet open={!!selectedNode} onOpenChange={() => setSelectedNode(null)}>
         <SheetContent className="overflow-y-auto">
@@ -272,10 +294,10 @@ const MindMap: React.FC<{ data: MindMapData | null }> = ({ data }) => {
                       rel="noopener noreferrer"
                       className="flex items-center"
                     >
-                      <ExternalLink className="mr-2 h-4 w-4" />
-                      <span className="truncate text-ellipsis">
-                        {link.title}
+                      <span className="flex-shrink-0 w-6">
+                        <ExternalLink className="h-4 w-4" />
                       </span>
+                      <span className="truncate">{link.title}</span>
                     </a>
                   </Button>
                 ))}

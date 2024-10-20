@@ -1,7 +1,7 @@
 import { ollama } from "ollama-ai-provider";
 import { convertToCoreMessages, generateText } from "ai";
 import { openai } from "@ai-sdk/openai";
-import { defaultPrompt } from "@/app/lib/prompts";
+import { defaultLocalPrompt, defaultExternalPrompt } from "@/app/lib/prompts";
 
 export async function POST(req: Request) {
   const { topic } = await req.json();
@@ -16,7 +16,9 @@ export async function POST(req: Request) {
     messages: convertToCoreMessages([
       {
         role: "user",
-        content: defaultPrompt + topic,
+        content: shouldUseLocalModels
+          ? defaultLocalPrompt + topic
+          : defaultExternalPrompt + topic,
       },
     ]),
   });
