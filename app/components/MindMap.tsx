@@ -199,18 +199,21 @@ const MindMap: React.FC<{ data: MindMapData | null }> = ({ data }) => {
         <Button
           onClick={() => window.location.reload()}
           variant="outline"
-          className="flex items-center gap-2"
+          className="flex items-center gap-2 cursor-pointer"
         >
           <PlusSquare className="w-4 h-4" />
           New
         </Button>
-        <Button onClick={downloadMarkdown} className="flex items-center gap-2">
+        <Button
+          onClick={downloadMarkdown}
+          className="flex items-center gap-2 cursor-pointer"
+        >
           <Download className="w-4 h-4" />
           Markdown
         </Button>
         <Button
           onClick={handleDownloadJson}
-          className="flex items-center gap-2"
+          className="flex items-center gap-2 cursor-pointer"
         >
           <Download className="w-4 h-4" />
           JSON
