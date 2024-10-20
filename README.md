@@ -44,4 +44,4 @@ Open [http://localhost:3000](http://localhost:3000) with your browser and then s
 
 ## Prompts
 
-The prompt used to generate the mind map data is defined in the `defaultPrompt` variable in the `prompts.ts` file.
+The prompts used to generate the mind map data is defined in the `defaultLocalPrompt` and `defaultExternalPrompt` variables in the `prompts.ts` file.
