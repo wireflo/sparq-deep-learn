@@ -6,7 +6,7 @@ const Credits: React.FC = () => {
       <p className="text-sm text-gray-700">
         Built with ❤️ by{" "}
         <a
-          href="https://linkedin.com/in/arthurtakeda"
+          href="https://github.com/aotakeda/learn-thing"
           className="text-blue-600 hover:underline"
         >
           Arthur Takeda
