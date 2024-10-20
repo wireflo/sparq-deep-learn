@@ -2,6 +2,8 @@
 
 This is a simple [Next.js](https://nextjs.org) project that implements a mind map visualization tool using [React Flow](https://reactflow.dev/).
 
+![Screenshot](public/screenshot.png)
+
 The UI is built using [shadcn](https://ui.shadcn.com/) and some components from [Magic UI](https://magicui.design/).
 
 It allows users to view and interact with mind maps, and download the mind map data as a markdown file.
@@ -45,3 +47,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser and then s
 ## Prompts
 
 The prompts used to generate the mind map data is defined in the `defaultLocalPrompt` and `defaultExternalPrompt` variables in the `prompts.ts` file.
+
+## License
+
+This project is licensed under the MIT License.
