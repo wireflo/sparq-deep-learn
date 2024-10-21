@@ -9,21 +9,23 @@ import { MermaidDiagram } from '@lightenna/react-mermaid-diagram';
 
 
 export default function MermaidMindMapContainer() {
-  const { data, isLoading, error, fetchMindMap } = useMindMapData();
+  const { data,rawdata, isLoading, error, fetchMindMapRaw } = useMindMapData();
   const router = useRouter();
 
   if (isLoading) return <LoadingMindMap />;
 
   if (error) {
     router.push("/?error=true");
-    return <CreateMindMap fetchMindMap={fetchMindMap} />;
+    return <CreateMindMap fetchMindMap={fetchMindMapRaw} />;
   }
-
-  if (!data) return <CreateMindMap fetchMindMap={fetchMindMap} />;
+  const diagram_text :string=rawdata?rawdata:"";
+  if (!diagram_text) return <CreateMindMap fetchMindMap={fetchMindMapRaw} />;
 
   return (
     <div className="w-full h-full">
-      <MermaidDiagram>{`graph TD;\nA-->B;\nB-->C;`}</MermaidDiagram>
+      <MermaidDiagram>
+        {diagram_text}
+      </MermaidDiagram>
 
     </div>
   );

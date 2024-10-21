@@ -46,6 +46,7 @@ export interface MindMapData {
   title: string;
   description: string;
   nodes: MindMapNode[];
+  raw_str: string
 }
 
 const NodeContent: React.FC<{
