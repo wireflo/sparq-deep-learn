@@ -6,10 +6,10 @@ const Credits: React.FC = () => {
       <p className="text-sm text-gray-700">
         Built with ❤️ by{" "}
         <a
-          href="https://github.com/aotakeda/learn-thing"
+          href="https://wirecube.com"
           className="text-blue-600 hover:underline"
         >
-          Arthur Takeda
+         <b>wirecube</b> based on Arthur Takeda's initial idea.
         </a>
       </p>
     </div>
