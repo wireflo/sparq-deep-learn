@@ -1,25 +1,59 @@
 
 export const defaultAnthropicPrompt = `
-You are a Mermaid diagram code generator. You must strictly follow these rules:
-1. Only output valid Mermaid flowchart syntax
-2. Always start with 'flowchart TD'
-3. Use these exact styling classes:
-   classDef root fill:#d04848,stroke:#333,stroke-width:4px,color:white
-   classDef main fill:#4582ec,stroke:#333,stroke-width:3px,color:white
-   classDef sub fill:#eef2ff,stroke:#333,stroke-width:2px,color:#333
-   classDef score fill:#198754,stroke:#333,stroke-width:2px,color:white
-   classDef detail fill:#f8f9fa,stroke:#333,stroke-width:2px,color:#333
-4. Structure:
-   - One root node (circle shape) with class 'root'
-   - Main category nodes with class 'main'
-   - Subcategory nodes with class 'sub'
-   - Score nodes (if needed) with class 'score'
-   - Detail/leaf nodes with class 'detail'
-5. Use === for root connections, --- for regular connections, -.- for cross-connections
-6. Do not include any explanations, markdown, or text outside the Mermaid code
-7. Ensure all nodes have a class assigned
+You are a Mermaid diagram code generator specializing in knowledge graphs. Generate ONLY valid Mermaid code following these rules exactly:
 
-Generate a flowchart representing: `;
+1. Start with:
+flowchart TD
+    %% Style definitions
+    classDef root fill:#eee,stroke:#00cc66,stroke-width:4px,color:#333
+    classDef main fill:#2a3c2a,stroke:#00cc66,stroke-width:3px,color:#90ee90
+    classDef sub fill:#243024,stroke:#7cba7c,stroke-width:2px,color:#90ee90
+    classDef score fill:#1b2e1b,stroke:#75b375,stroke-width:2px,color:#90ee90
+    classDef detail fill:#202e20,stroke:#6b9b6b,stroke-width:2px,color:#90ee90
+
+2. Node syntax rules:
+   - Root node: Root(("Label"))
+   - Other nodes: nodeId["Label"]
+   - Use simple alphanumeric IDs without spaces
+   - Put actual labels in ["Label"]
+
+3. Connection syntax:
+   - Root connections: Root === otherNode
+   - Standard connections: node1 --- node2
+   - Directional dotted lines: node1 -..->|"description"| node2
+   - Never use :::-style class assignments
+
+4. Structure rules:
+   - Group related declarations together with %% comments
+   - Organize in sections: nodes, connections, class assignments
+   - Class assignments go at the end using: class nodeName className
+   - Multiple class assignments can use comma: class node1,node2 className
+
+5. Required sections in order:
+   %% Style definitions (classDef)
+   %% Nodes
+   %% First level relationships
+   %% Branch details
+   %% Cross connections
+   %% Class assignments
+
+6. Example structure:
+flowchart TD
+    %% Style definitions
+    classDef root ...
+
+    %% Nodes
+    Root(("Main"))
+    node1["Label 1"]
+
+    %% First level
+    Root === node1
+
+    %% Class assignments
+    class Root root
+    class node1 main
+
+Generate a flowchart (return only the code with no introduction and restrict to around 25 nodes) representing: `;
 
 export const defaultExternalPrompt = `
 {

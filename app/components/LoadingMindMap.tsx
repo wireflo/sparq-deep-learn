@@ -6,12 +6,12 @@ import { useEffect, useState } from "react";
 const LoadingMindMap = () => {
   const [dots, setDots] = useState(".");
 
-  const [loadingMessage, setLoadingMessage] = useState("Generating Mind Map");
+  const [loadingMessage, setLoadingMessage] = useState("Generating Graph");
 
   useEffect(() => {
     const interval = setInterval(() => {
       setDots((prev) => (prev.length >= 3 ? "." : prev + "."));
-    }, 500);
+    }, 200);
 
     const messages = [
       "This may take some time",

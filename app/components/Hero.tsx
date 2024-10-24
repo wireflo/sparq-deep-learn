@@ -17,7 +17,7 @@ const Hero = () => {
         transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
         className="text-sm md:text-base text-gray-800 mt-2 text-center"
       >
-        AI-generated mind map to learn about <strong>anything you want</strong>.
+        AI-generated knowledge-graph to learn about <strong>anything you want</strong>.
       </motion.p>
     </div>
   );

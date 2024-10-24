@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { Input } from "@/components/ui/input";
 import ShimmerButton from "@/components/ui/shimmer-button";
 
 interface CreateMindMapFormProps {
@@ -22,12 +21,13 @@ export default function CreateMindMapForm({
 
   return (
     <form onSubmit={handleSubmit} className="flex gap-2 w-full max-w-3xl">
-      <Input
-        type="text"
+      <textarea
+        rows={2}
         value={topic}
+        cols={100}
         onChange={(e) => setTopic(e.target.value)}
         autoFocus
-        placeholder="Enter a topic"
+        placeholder="Enter a topic or document"
         className="px-4 py-2 border border-gray-300 rounded z-10"
       />
       <ShimmerButton type="submit" className="px-5 z-10">
