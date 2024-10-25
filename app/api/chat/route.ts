@@ -9,9 +9,10 @@ export async function POST(req: Request) {
   const shouldPreferAnthropic =
       process.env.ANTHROPIC_MODELS_PREFERRED === "true";
   const model = shouldPreferAnthropic
-    ? anthropic("claude-3-5-sonnet-20240620")
+    ? anthropic("claude-3-5-sonnet-20241022")
     : openai("gpt-4o");
-
+  console.time()
+  console.log("Sending prompt: ", topic)
   const result = await generateText({
     model,
     messages: convertToCoreMessages([
@@ -23,5 +24,8 @@ export async function POST(req: Request) {
       },
     ]),
   });
+  console.timeLog()
+  console.log("Response: ", result.text)
+
   return new Response(result.text);
 }

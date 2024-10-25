@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 const LoadingMindMap = () => {
   const [dots, setDots] = useState(".");
 
-  const [loadingMessage, setLoadingMessage] = useState("Generating Graph");
+  const [loadingMessage, setLoadingMessage] = useState("Building mental model of topics");
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -14,7 +14,8 @@ const LoadingMindMap = () => {
     }, 200);
 
     const messages = [
-      "This may take some time",
+      "Connecting ideas",
+        "Constructing graph",
       "Connecting ideas",
       "Well, this is awkward",
       "It works on my machine",
@@ -28,7 +29,7 @@ const LoadingMindMap = () => {
     const messageInterval = setInterval(() => {
       setLoadingMessage(messages[messageIndex]);
       messageIndex = (messageIndex + 1) % messages.length;
-    }, 20000);
+    }, 1000);
 
     return () => {
       clearInterval(interval);

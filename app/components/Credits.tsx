@@ -9,7 +9,7 @@ const Credits: React.FC = () => {
           href="https://wirecube.com"
           className="text-blue-600 hover:underline" >
          <b>wirecube</b> <br />.
-        </a> <span class="text-gray-400 text-xs">(initial idea by Arthur Takeda)</span>
+        </a> <span className="text-gray-400 text-xs">(initial idea by Arthur Takeda)</span>
       </p>
     </div>
   );
