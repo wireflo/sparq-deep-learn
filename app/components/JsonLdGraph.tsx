@@ -4,70 +4,12 @@ import Graph from 'react-graph-vis';
 
 const JsonLdGraph = ({ jsonLdData }) => {
     // Convert JSON-LD to graph format
-    const convertJsonLdToGraph = (data) => {
-        const nodes = [];
-        const edges = [];
-        const processedNodes = new Set();
-
-        const addNode = (id, label, group = 'default') => {
-            if (!processedNodes.has(id)) {
-                nodes.push({
-                    id,
-                    label: label || id,
-                    group,
-                    font: { size: 16 },
-                    shape: group === 'root' ? 'diamond' : 'dot',
-                });
-                processedNodes.add(id);
-            }
-        };
-
-        const processObject = (obj, parentId = null) => {
-            if (!obj || typeof obj !== 'object') return;
-
-            // Add current node
-            const currentId = obj['@id'];
-            const currentLabel = obj.label;
-            const isRoot = obj['@type'] === 'Rechtskategorie';
-
-            if (currentId) {
-                addNode(currentId, currentLabel, isRoot ? 'root' : 'default');
-
-                // Add edge from parent if exists
-                if (parentId) {
-                    edges.push({
-                        from: parentId,
-                        to: currentId,
-                        // Get the relationship type from the parent object's keys
-                        label: Object.keys(obj).find(key =>
-                            typeof obj[key] === 'object' && obj[key]['@id'] === currentId
-                        ) || ''
-                    });
-                }
-            }
-
-            // Process all properties that might contain nested nodes
-            Object.entries(obj).forEach(([key, value]) => {
-                if (key !== '@context' && key !== '@type' && key !== '@id' && key !== 'label') {
-                    if (Array.isArray(value)) {
-                        value.forEach(item => processObject(item, currentId));
-                    } else if (typeof value === 'object') {
-                        processObject(value, currentId);
-                    }
-                }
-            });
-        };
-
-        processObject(data);
-        return { nodes, edges };
-    };
-
-    const { nodes, edges } = convertJsonLdToGraph(jsonLdData);
 
     const options = {
         nodes: {
             borderWidth: 2,
             size: 30,
+            shape: 'box',
             color: {
                 border: '#2B7CE9',
                 background: '#97C2FC',
@@ -95,10 +37,10 @@ const JsonLdGraph = ({ jsonLdData }) => {
         physics: {
             enabled: true,
             hierarchicalRepulsion: {
-                centralGravity: 0.0,
+                centralGravity: 0.2,
                 springLength: 200,
                 springConstant: 0.01,
-                nodeDistance: 150,
+                nodeDistance: 100,
             },
             solver: 'hierarchicalRepulsion',
         },
@@ -107,19 +49,58 @@ const JsonLdGraph = ({ jsonLdData }) => {
                 enabled: true,
                 direction: 'UD',
                 sortMethod: 'directed',
-                levelSeparation: 150
+                levelSeparation: 50
             }
         }
     };
 
+// Convert JSON-LD to graph format
+    const convertToGraph = (jsonLd) => {
+        const nodes = [];
+        const edges = [];
+        const seen = new Set();
+
+        const processNode = (obj, parentId = null, relationship = null) => {
+            if (!obj || typeof obj !== 'object') return;
+
+            const id = obj['@id'];
+            if (id && !seen.has(id)) {
+                nodes.push({ id, label: obj.label || id });
+                seen.add(id);
+
+                if (parentId) {
+                    edges.push({
+                        from: parentId,
+                        to: id,
+                        label: relationship
+                    });
+                }
+            }
+
+            Object.entries(obj).forEach(([key, value]) => {
+                if (key !== '@context' && key !== '@type' && key !== '@id' && key !== 'label') {
+                    if (Array.isArray(value)) {
+                        value.forEach(item => processNode(item, id, key));
+                    } else if (typeof value === 'object') {
+                        processNode(value, id, key);
+                    }
+                }
+            });
+        };
+
+        processNode(jsonLd);
+        return { nodes, edges };
+    };
+
+    const { nodes, edges } = convertToGraph(jsonLdData);
+
 
 
     return (
-        <div style={{ height: '800px', width: '100%' }}>
+        <div style={{ height: '600px' }}>
             <Graph
                 graph={{ nodes, edges }}
                 options={options}
-
             />
         </div>
     );
