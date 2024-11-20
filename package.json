@@ -27,6 +27,8 @@
     "ollama-ai-provider": "^0.15.2",
     "react": "^18",
     "react-dom": "^18",
+    "react-graph-vis": "^1.0.7",
+    "react-zoom-pan-pinch": "^3.6.1",
     "reactflow": "^11.11.4",
     "sonner": "^1.5.0",
     "tailwind-merge": "^2.5.4",

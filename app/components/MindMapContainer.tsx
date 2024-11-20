@@ -5,26 +5,28 @@ import MindMap from "./MindMap";
 import { useMindMapData } from "../hooks/useMindMapData";
 import LoadingMindMap from "./LoadingMindMap";
 import CreateMindMap from "./CreateMindMap";
+import JsonLdGraph from "@/app/components/JsonLdGraph";
 import { useRouter } from "next/navigation";
 
 export default function MindMapContainer() {
-  const { data, isLoading, error, fetchMindMap } = useMindMapData();
+  const {data, isLoading, error, fetchMindMap} = useMindMapData();
   const router = useRouter();
 
-  if (isLoading) return <LoadingMindMap />;
+  if (isLoading) return <LoadingMindMap/>;
 
   if (error) {
     router.push("/?error=true");
-    return <CreateMindMap fetchMindMap={fetchMindMap} />;
+    return <CreateMindMap fetchMindMap={fetchMindMap}/>;
   }
 
-  if (!data) return <CreateMindMap fetchMindMap={fetchMindMap} />;
+
+  if (!data) return <CreateMindMap fetchMindMap={fetchMindMap}/>;
 
   return (
-    <div className="w-full h-full">
-      <ReactFlowProvider>
-        <MindMap data={data} />
-      </ReactFlowProvider>
-    </div>
+      <div>
+        <h1>Austrian Labor Law Graph</h1>
+        <JsonLdGraph jsonLdData={data} />
+      </div>
   );
+
 }

@@ -76,3 +76,23 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+.tools-container {
+  background: white;
+  padding: 8px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.tools-container button {
+  margin: 0 4px;
+  padding: 4px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: white;
+  cursor: pointer;
+}
+
+.tools-container button:hover {
+  background: #f0f0f0;
+}

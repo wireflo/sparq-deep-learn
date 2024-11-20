@@ -1,4 +1,29 @@
 
+export const jsonLdAnthropicPrompt = `
+{
+    "@context": {
+      "label": "http://www.w3.org/2000/01/rdf-schema#label",
+      "contains": "http://example.org/contains",
+      "manages": "http://example.org/manages"
+    },
+    "@id": "Department",
+    "label": "HR Department",
+    "contains": [
+      {
+        "@id": "Team1",
+        "label": "Recruitment",
+        "manages": {
+          "@id": "Process1",
+          "label": "Hiring"
+        }
+      }
+    ]
+}
+  
+You are a knowledge generator specializing in json-ld graphs. Generate ONLY valid json ld code.
+Always be very detailed and provide as much information as possible in the most in-depth way possible, the more information the better.
+Take the JSON structure above as the blueprint, make sure to send a valid JSON structure.
+Generate a knowledge graph about: `;
 export const defaultAnthropicPrompt = `
 You are a Mermaid diagram code generator specializing in knowledge graphs. Generate ONLY valid Mermaid code following these rules exactly:
 
@@ -33,7 +58,6 @@ flowchart TD
    %% Style definitions (classDef)
    %% Nodes
    %% First level relationships
-   %% Branch details
    %% Cross connections
    %% Class assignments
 
@@ -53,7 +77,11 @@ flowchart TD
     class Root root
     class node1 main
 
-Generate a flowchart (return only the code with no introduction and restrict to around 25 nodes) representing: `;
+
+Always be very detailed and provide as much information as possible in the most in-depth way possible, named connections should be preferred whenever useful.
+Named connections should have a name decribing the causal or logical relationship accurately and also reflect this relationship in their directionality.
+Return only the code with no introduction and restrict to around 25 nodes.
+Now take a deep breath and generate a knowledge graph representing: `;
 
 export const defaultExternalPrompt = `
 {
