@@ -12,7 +12,7 @@ export default function MindMapContainer() {
   const {data, isLoading, error, fetchMindMap} = useMindMapData();
   const router = useRouter();
 
-  if (isLoading) return <LoadingMindMap/>;
+ if (isLoading) return <LoadingMindMap/>;
 
   if (error) {
     router.push("/?error=true");
@@ -22,9 +22,9 @@ export default function MindMapContainer() {
 
   if (!data) return <CreateMindMap fetchMindMap={fetchMindMap}/>;
 
+
   return (
       <div>
-        <h1>Austrian Labor Law Graph</h1>
         <JsonLdGraph jsonLdData={data} />
       </div>
   );

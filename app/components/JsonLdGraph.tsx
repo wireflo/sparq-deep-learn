@@ -11,11 +11,11 @@ const JsonLdGraph = ({ jsonLdData }) => {
             size: 30,
             shape: 'box',
             color: {
-                border: '#2B7CE9',
-                background: '#97C2FC',
+                border: '#195c00',
+                background: '#bafab9',
                 highlight: {
-                    border: '#2B7CE9',
-                    background: '#D2E5FF'
+                    border: '#48f40b',
+                    background: '#9bfd9a'
                 }
             },
             font: {
@@ -24,14 +24,14 @@ const JsonLdGraph = ({ jsonLdData }) => {
             }
         },
         edges: {
-            color: '#2B7CE9',
+            color: '#929292',
             width: 1,
             font: {
                 size: 12,
                 align: 'middle'
             },
             arrows: {
-                to: { enabled: true, scaleFactor: 0.5 }
+                to: { enabled: true, scaleFactor: 0.9 }
             }
         },
         physics: {
@@ -40,7 +40,7 @@ const JsonLdGraph = ({ jsonLdData }) => {
                 centralGravity: 0.2,
                 springLength: 200,
                 springConstant: 0.01,
-                nodeDistance: 100,
+                nodeDistance: 150,
             },
             solver: 'hierarchicalRepulsion',
         },
@@ -49,7 +49,7 @@ const JsonLdGraph = ({ jsonLdData }) => {
                 enabled: true,
                 direction: 'UD',
                 sortMethod: 'directed',
-                levelSeparation: 50
+                levelSeparation: 100
             }
         }
     };

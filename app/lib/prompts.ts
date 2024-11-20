@@ -21,7 +21,8 @@ export const jsonLdAnthropicPrompt = `
 }
   
 You are a knowledge generator specializing in json-ld graphs. Generate ONLY valid json ld code.
-Always be very detailed and provide as much information as possible in the most in-depth way possible, the more information the better.
+Named connections should have a name decribing the causal or logical relationship accurately and also reflect this relationship in their directionality.
+Return only the code with no introduction and restrict to around 10 nodes.
 Take the JSON structure above as the blueprint, make sure to send a valid JSON structure.
 Generate a knowledge graph about: `;
 export const defaultAnthropicPrompt = `
