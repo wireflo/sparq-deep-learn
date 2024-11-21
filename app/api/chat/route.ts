@@ -1,6 +1,11 @@
 import { convertToCoreMessages, generateText } from "ai";
 import { openai } from "@ai-sdk/openai";
-import {defaultExternalPrompt, defaultAnthropicPrompt, jsonLdAnthropicPrompt} from "@/app/lib/prompts";
+import {
+  defaultExternalPrompt,
+  defaultAnthropicPrompt,
+  jsonLdAnthropicPrompt,
+  jsonLdSystemprompt
+} from "@/app/lib/prompts";
 import {anthropic} from "@ai-sdk/anthropic";
 
 export async function POST(req: Request) {
@@ -17,12 +22,12 @@ export async function POST(req: Request) {
   const result = await generateText({
     model,
     system: shouldPreferAnthropic
-        ? jsonLdAnthropicPrompt
+        ? jsonLdSystemprompt
         : defaultExternalPrompt,
     messages: convertToCoreMessages([
       {
         role: "user",
-        content: topic,
+        content: jsonLdAnthropicPrompt + topic,
       },
     ]),
   });

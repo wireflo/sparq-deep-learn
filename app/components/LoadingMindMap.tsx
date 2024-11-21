@@ -29,7 +29,7 @@ const LoadingMindMap = () => {
     const messageInterval = setInterval(() => {
       setLoadingMessage(messages[messageIndex]);
       messageIndex = (messageIndex + 1) % messages.length;
-    }, 1000);
+    }, 2000);
 
     return () => {
       clearInterval(interval);
@@ -54,7 +54,7 @@ const LoadingMindMap = () => {
         </div>
       </div>
 
-      <h2 className="text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-gray-700 to-slate-700 animate-wave">
+      <h2 className="text-2xl text-left font-semibold text-transparent bg-clip-text bg-gradient-to-r from-gray-700 to-slate-700 animate-wave">
         {loadingMessage}
         {dots}
       </h2>
