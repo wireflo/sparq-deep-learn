@@ -1,3 +1,4 @@
+"use client";
 import React from 'react';
 // @ts-ignore
 import Graph from 'react-graph-vis';
@@ -7,52 +8,58 @@ const JsonLdGraph = ({ jsonLdData }) => {
 
     const options = {
         nodes: {
-            borderWidth: 2,
+            margin: 10,
+            borderWidth: 1,
             size: 50,
             shape: 'box',
+            shapeProperties:{
+                borderRadius: 2
+        },
             widthConstraint: {
-                minimum: 100},
+                minimum: 150},
             font: {
                 face: 'Inter, system-ui, sans-serif',
                 size: 14,
-                color: '#2D3748',
-                strokeWidth: 2,
+                color: '#4c4c4c',
+                strokeWidth: 3,
                 strokeColor: '#ffffff'
             },
             color: {
-                border: '#4A5568',
-                background: '#EDF2F7',
+                border: '#656667',
+                background: '#edf7ee',
                 highlight: {
-                    border: '#2B6CB0',
-                    background: '#BEE3F8'
+                    border: '#2d7736',
+                    background: '#bef8d7'
                 },
                 hover: {
-                    border: '#3182CE',
-                    background: '#E6F6FF'
+                    border: '#42e14a',
+                    background: '#9ee8b6'
                 }
             }
         },
 
         physics:  {
             enabled: true,
+            solver: 'repulsion',
+            minVelocity: 0.1,
+            maxVelocity: 50,
             repulsion: {
-                nodeDistance: 300,    // Minimum distance between nodes
+                nodeDistance: 100,    // Minimum distance between nodes
                 centralGravity: 0.1,  // Pull to center
                 // Lower = more spread out
                 springLength: 200,    // Rest length of edges
                 // Higher = longer edges
 
-                springConstant: 0.03, // Edge "spring" stiffness
-                // Higher = more rigid edges
+                springConstant: 0.01, // Edge "spring" stiffness
+                // Higher = more rigid edge
 
-                damping: 0.09        // How much nodes slow down
+                damping: 0.05       // How much nodes slow down
                 // Higher = more stable
             },
             stabilization: {
                 enabled: true,
                 iterations: 100,
-                updateInterval: 25,
-                onceEnabled: true
+                updateInterval: 25
             }
         },
         layout: {
@@ -83,18 +90,19 @@ const JsonLdGraph = ({ jsonLdData }) => {
                         label: relationship
                     });
                 } else {
-                    nodes.push({ id, label: obj.label || id, color: {
-                            color: '#c4ccd7',
-                            highlight: '#4299E1',
-                            hover: '#63B3ED'
+                    nodes.push({ id, label: obj.label || id, margin:15,borderWidth:2,color: {
+                            color: '#abd69d',
+                            background:'#a7baac',
+                            highlight: '#09200a',
+                            hover: '#9ee8b6',
+                            border: '#033313'
 
                         },font: {
-                            size: 18,
-                            color: '#2D3748',
-                            strokeWidth: 4,
+                            size: 22,
+
+                            strokeWidth: 2,
                             strokeColor: '#ffffff'
-                        },
-                        width: 2.5
+                        }
                     });
                 }
             }

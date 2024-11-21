@@ -19,6 +19,7 @@ export async function POST(req: Request) {
   const current_time = ""+new Date().getTime();
   console.time(current_time);
   console.log("Sending prompt: ", topic)
+
   const result = await generateText({
     model,
     system: shouldPreferAnthropic
@@ -31,6 +32,7 @@ export async function POST(req: Request) {
       },
     ]),
   });
+
   console.timeLog()
   console.log("Response: ", result.text)
 

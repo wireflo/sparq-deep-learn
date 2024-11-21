@@ -5,7 +5,6 @@ export const jsonLdAnthropicPrompt = `Use this example structure to produce mini
  omit the "@graph" since its not needed:
 
     "@context": {
-
       "label": "...",
       "...":"http://sparq.w3.ai/...",
     },
@@ -18,12 +17,8 @@ export const jsonLdAnthropicPrompt = `Use this example structure to produce mini
          "contains":[{ "@id": "some-child-concept",
         "@label":"related concept"}...]
 
-      
-
-
-
 Named connections should have a name describing the causal or logical relationship accurately and also reflect this relationship in their directionality.
-Return only the code with no introduction and restrict to around 10 nodes but no less than 8.
+Return only the code with no introduction and restrict to around 15 nodes but no less than 12.
 Take the JSON structure above as the blueprint, make sure to send a valid JSON structure.
 
 Generate a knowledge graph about: `;
